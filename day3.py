@@ -4,7 +4,8 @@ import re
 search_string = ""
 for i in range(6):
     search_string += input()
-regex = r"mul\((\d+),(\d+)\)"
+regex = "mul\(([1-9]*),([1-9]*)\)"
+
 matches = re.findall(regex, search_string)
 
 print(matches)
@@ -15,3 +16,4 @@ for match in matches:
         numbers.append(int(num))
     sums += (numbers[0] * numbers[1])
 print(sums)
+
