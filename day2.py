@@ -27,22 +27,43 @@
 # print(count)
 
 
-
+def check(nums):
+	for i in range(len(nums) -1):
+			if (abs(nums[i+1] - nums[i]) <= 3 and abs(nums[i+1] - nums[i]) >=1 ):
+				continue
+			else:
+				return False
+	if ((nums == sorted(nums) or nums == sorted(nums, reverse= True))) :
+		return True
+	else: 
+		return False
 
 try:
-    count = 0
-    while True:
-        nums = [int(x) for x in input().split()]
-        original_set = set(nums)
-        valid_nums =[]
-      
-        for i in range(len(nums)):
-            if (i == 0 or abs(nums[i] - nums[i-1]) <= 3 and abs(nums[i] - nums[i-1]) >= 1):
-              valid_nums.append(i)
-        if len(nums) - len(valid_nums) <= 1 and set(valid_nums) == original_set:
-            count += 1
+	count =0
+	while True:
+		nums = [int(x) for x in input().split()]
+		if (check(nums)):
+			count+= 1
+		else :
+			flag = False
+			for j in range(len(nums)):
+				duplicate = nums.copy()
+				duplicate.pop(j)
+				if (check(duplicate)):
+					flag = True
+					break
+				else:
+					continue
+
+			if (flag == True):
+				count+= 1
+
+
+
 
 except EOFError:
-    pass
+	pass
 
 print(count)
+
+
