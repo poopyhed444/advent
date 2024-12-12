@@ -24,7 +24,7 @@ while True:
         line = input()
         if "." not in line:
             break
-        sigma.append(line)
+        sigma.append(list(line))
        
 	    
     except EOFError:
@@ -38,11 +38,17 @@ for i in range(len(sigma)):
             x = i
             y = j
 
+positions = set()
 
-for i in range(100):
+for i in range(100000):
     char = sigma[x][y]
-    print(char, x, y)
-    x,y = direction(char,x,y)
-    if (sigma[x][y] == "#"):
-       char = switchto(sigma[x][y])
-       print(sigma)
+    new_x, new_y = direction(char, x, y)
+    if (new_x > len(sigma)-1 or new_y > len(sigma[0])-1):
+        break
+    if sigma[new_x][new_y] == "#":
+        char = switchto(char)
+    else:
+        x, y = new_x, new_y
+    sigma[x][y] = char
+    positions.add(int(str(x)+ str(y)))
+print(len(positions))
