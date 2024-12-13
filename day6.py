@@ -8,8 +8,6 @@ def direction(pointer,r,c):
         return r,c+1
     if (pointer == "<"):
         return r,c-1
-    else:
-        return r, c  
 def switchto(pointer):
     if (pointer == "^"):
         return ">"
@@ -40,15 +38,18 @@ for i in range(len(sigma)):
 
 positions = set()
 
-for i in range(100000):
+while True:
+    positions.add((x, y))
     char = sigma[x][y]
     new_x, new_y = direction(char, x, y)
-    if (new_x > len(sigma)-1 or new_y > len(sigma[0])-1):
-        break
+    if (new_x < 0 or new_x > len(sigma)-1 or new_y < 0 or new_y > len(sigma[0])-1):     
+           print(len(positions))
+           break
     if sigma[new_x][new_y] == "#":
         char = switchto(char)
     else:
-        x, y = new_x, new_y
+         x, y = new_x, new_y
     sigma[x][y] = char
-    positions.add(int(str(x)+ str(y)))
+
+
 print(len(positions))
