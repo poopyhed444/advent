@@ -1,17 +1,13 @@
 sigma = []
-
-
-def direction(pointer, r, c):
+def direction(pointer,r,c):
     if (pointer == "^"):
-        return r - 1, c
+        return r-1,c
     if (pointer == "v"):
-        return r + 1, c
+        return r+1,c
     if (pointer == ">"):
-        return r, c + 1
+        return r,c+1
     if (pointer == "<"):
-        return r, c - 1
-
-
+        return r,c-1
 def switchto(pointer):
     if (pointer == "^"):
         return ">"
@@ -21,60 +17,56 @@ def switchto(pointer):
         return "<"
     if (pointer == "<"):
         return "^"
-
-
-with open('input_file.txt', 'r') as file:
-    sigma = []
-    for line in file:
-        line = line.strip()
+while True:
+    try:
+        line = input()
         if "." not in line:
             break
         sigma.append(list(line))
+       
+	    
+    except EOFError:
+        break
 
 x = 0
-y = 0
+y= 0 
 for i in range(len(sigma)):
     for j in range(len(sigma[0])):
         if sigma[i][j] == "^":
             x = i
             y = j
+
 positions = set()
-obs = 0
-duplicate_found = False
+original_sigma = [row[:] for row in sigma]  
 
-max_iterations = 100000
-iteration_count = 0
+for i in range(len(sigma)):
+    for j in range(len(sigma[0])):
+        x, y = i, j  
+        original_char = sigma[i][j]
+        sigma[i][j] = '#'
+        positions = set()
+        print(sigma)
 
-while True:
-    for i in range(len(sigma)):
-        for j in range(len(sigma[0])):
-            directions = []
-            if sigma[x][y] == sigma[i][j]:
-                continue
-            else:
-                sigma[i][j] = "#"
-
+        while True:
+            if (x, y) in positions:
+                break 
+            positions.add((x, y))
             char = sigma[x][y]
+            if char == "#":
+                print("hg")
+                break
             new_x, new_y = direction(char, x, y)
-            if (new_x < 0 or new_x > len(sigma) - 1 or new_y < 0 or new_y > len(sigma[0]) - 1):
+            if new_x < 0 or new_x >= len(sigma) or new_y < 0 or new_y >= len(sigma[0]):     
+                print("j")
                 break
 
             if sigma[new_x][new_y] == "#":
                 char = switchto(char)
             else:
                 x, y = new_x, new_y
-                directions.append(x + y)
-                sigma[x][y] = char
+            sigma[x][y] = char
 
-            positions.add((x, y))
+        sigma[i][j] = original_char
 
-            iteration_count += 1
-            if iteration_count >= max_iterations:
-                print(f"Maximum iterations ({max_iterations}) reached. Breaking the loop.")
-                obs += 1
-                break
+print("Final result:", len(positions))
 
-
-
-
-print(obs)
